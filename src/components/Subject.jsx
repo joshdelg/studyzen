@@ -42,6 +42,7 @@ export default function Subject(props) {
 
   const handleSubmit = () => {
       if(screen === 0) {
+          props.addDataPoint(mentalHealth);
         if(mentalHealth < 5 || stress > 5) {
             setScreen(1);
           } else {

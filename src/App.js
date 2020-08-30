@@ -3,6 +3,8 @@ import { Box, Stack, Heading, Text, Select, Flex, Button, Grid } from "@chakra-u
 import Header from './components/Header';
 import MediaPlayer from './components/MediaPlayer';
 import SubjectList from './components/SubjectList';
+import { XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineSeries, LineMarkSeries } from 'react-vis';
+import '../node_modules/react-vis/dist/style.css';
 
 function App() {
 
@@ -11,7 +13,7 @@ function App() {
       'https://www.youtube.com/watch?v=iEGFFyv0MH4'
     ],
     humanities: [
-      'https://www.youtube.com/watch?v=mIYzp5rcTvU&t=968s'
+      'https://www.youtube.com/watch?v=hKkR4YFtyJk&vl=en'
     ],
     science: [
       'https://www.youtube.com/watch?v=HU7fx7bF94Q&list=PLuDoiEqVUgegWFXgllgj1pL3JkeVfKA4m&index=2&t=0s'
@@ -35,6 +37,13 @@ function App() {
 
   const [urls, setUrls] = useState(urlSet.math);
   const [isInSession, setIsInSession] = useState(false);
+  const [graphData, setGraphData] = useState([
+    {x: 1, y: 7}, {x: 2, y: 8}, {x: 3, y: 8}, {x: 4, y: 6}
+  ]);
+
+  const addDataPoint = (y) => {
+    setGraphData([...graphData, {x: graphData.length + 1, y: y}]);
+  };
 
   const studySubject = (subjectType) => {
     if(isInSession) {
@@ -76,13 +85,24 @@ function App() {
           studySubject={studySubject}
           stopStudy={stopStudy}
           isInSession={isInSession}
+          addDataPoint={addDataPoint}
         />
+        <Heading my={8} size="2xl">Your Mental Health Over Time</Heading>
+        <Flex my={8} justify="center">
+        <XYPlot yDomain={[0, 10]} height={300} width={1080}>
+          <VerticalGridLines />
+          <HorizontalGridLines />
+          <XAxis tickTotal={graphData.length} title="Survey Submission Number"/>
+          <YAxis title="Mental Health Scale"/>
+          <LineMarkSeries data={graphData} />
+        </XYPlot>
+      </Flex>
       </Stack>
       <Box pos="fixed" bottom="0" zIndex={2} w="100%">
         <MediaPlayer urls={urls} isInSession={isInSession} />
       </Box>
       {/*Placeholder to allow media player to not obstruct anything*/}
-      <Box h="100px">{" "}</Box>
+      <Box h="150px">{" "}</Box>
     </Box>
   );
 }

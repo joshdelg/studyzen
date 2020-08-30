@@ -30,7 +30,8 @@ export default function SubjectList(props) {
                         i={i}
                         studySubject={props.studySubject}
                         stopStudy={props.stopStudy}
-                        isInSession={props.isInSession}/>
+                        isInSession={props.isInSession}
+                        addDataPoint={props.addDataPoint}/>
                 ))}
             <Button w="12.5%" onClick={onOpen}>+ Add Class</Button>
             </Stack>
